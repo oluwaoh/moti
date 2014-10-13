@@ -14,7 +14,7 @@
       "48": "icon-48.png"
    },
    "manifest_version": 2,
-   "name": "Motivation",
+   "name": "Motivation (devm33 fork)",
    "offline_enabled": true,
-   "version": "0.6"
+   "version": "0.1"
 }
