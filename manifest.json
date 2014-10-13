@@ -6,6 +6,9 @@
    "chrome_url_overrides": {
       "newtab": "dashboard.html"
    },
+   "permissions": [
+       "bookmarks"
+   ],
    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
    "description": "Replace new tab page with Motivation",
    "icons": {
@@ -16,5 +19,5 @@
    "manifest_version": 2,
    "name": "Motivation (devm33 fork)",
    "offline_enabled": true,
-   "version": "0.1"
+   "version": "0.2"
 }
