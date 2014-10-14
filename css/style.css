@@ -53,6 +53,15 @@ body, input {
     width: 210px;
 }
 
+/* styles for app/bookmarks.html */
+
+bookmarks {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 20px;
+}
+
 /* styles for app/dob.html */
 
 form {

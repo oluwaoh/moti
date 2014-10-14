@@ -1,4 +1,4 @@
-angular.module('app', [])
+angular.module('app', ['bookmarks'])
 
 .controller('AppCtrl', ['$scope', 'age', function($scope, age) {
     $scope.app = {};
