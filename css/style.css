@@ -63,13 +63,21 @@ bookmarks {
     color: #555;
 }
 
-bookmarks .index {
-    font-size: 0.7rem;
-    color: #444;
+bookmarks .bookmark {
+    display: table;
+    margin: 5px;
 }
 
-bookmarks .bookmark {
-    margin: 5px;
+bookmarks .bookmark > span {
+    display: table-cell;
+    vertical-align: middle;
+    padding: 5px;
+}
+
+bookmarks .index {
+    width: 20px;
+    font-size: 0.7rem;
+    color: #444;
 }
 
 bookmarks .bookmark.link {
@@ -78,17 +86,6 @@ bookmarks .bookmark.link {
 
 bookmarks .bookmark.link:hover {
     background-color: #eee;
-}
-
-bookmarks .bookmark > span {
-    float:left;
-    margin-right: 5px;
-}
-
-bookmarks .bookmark:after {
-    content: '';
-    clear: both;
-    display: table;
 }
 
 

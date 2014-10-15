@@ -1,15 +1,8 @@
 angular.module('bookmarks', [])
 
-.directive('faviconLink', [function() {
-    return {
-        scope: { url: '=faviconLink' },
-        link: function(scope, element, attrs) {
-            var anchor = angular.element('<a/>')[0];
-            anchor.href = scope.url;
-            scope.faviconUrl = anchor.protocol + anchor.host + '/favicon.ico';
-        },
-        template: '<img ng-src="{{ faviconUrl }}" width="16" height="16"/>'
-    };
+.config(['$compileProvider', function($compileProvider) {
+    // need to access chrome://favicon/ for favicon images
+    $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|chrome):/);
 }])
 
 .directive('bookmark', [function() {
