@@ -26,6 +26,7 @@ _Note: focusing the page is shift-tab in my browser (chrome on linux)._
 - [ ] Add some sort of access to bookmarks
     - [x] Display clickable shortcuts with favicons
     - [x] Add hotkeys to open shortcuts
+    - [ ] Support numberpad numbers
     - [ ] Support more than 10 bookmarks
     - [ ] Add ability to navigate down into bookmark folders
     - [ ] Add ability to "open all bookmarks" in a folder
