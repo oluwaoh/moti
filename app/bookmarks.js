@@ -1,14 +1,31 @@
 angular.module('bookmarks', [])
 
-.directive('bookmark', [function() {
+.directive('faviconLink', [function() {
     return {
-        scope: { bookmark: '=', index: '=' },
-        templateUrl: 'app/bookmark.html',
-        controller: 'BookmarkCtrl'
+        scope: { url: '=faviconLink' },
+        link: function(scope, element, attrs) {
+            var anchor = angular.element('<a/>')[0];
+            anchor.href = scope.url;
+            scope.faviconUrl = anchor.protocol + anchor.host + '/favicon.ico';
+        },
+        template: '<img ng-src="{{ faviconUrl }}" width="16" height="16"/>'
     };
 }])
 
-.controller('BookmarkCtrl', ['$window', function($window) {
+.directive('bookmark', [function() {
+    return {
+        scope: { bookmark: '=' },
+        templateUrl: 'app/bookmark.html',
+        controller: 'BookmarkCtrl',
+        controllerAs: 'BookmarkCtrl',
+    };
+}])
+
+.controller('BookmarkCtrl', ['$window', '$scope', function($window, $scope) {
+    
+    this.click = function() {
+
+    };
 
 }])
 

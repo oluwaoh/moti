@@ -1,4 +1,7 @@
-<span class="index">{{ index }}</span>
-<span ng-if="bookmark.title">{{bookmark.title}}</span>
-<span ng-if="!bookmark.title">{{bookmark.url}}</span>
+<div class="bookmark" ng-class="{ link: bookmark.url }"
+    ng-click="BookmarkCtrl.click()">
+    <span class="index">{{ bookmark.index }}</span>
+    <span favicon-link="bookmark.url"></span>
+    <span ng-if="bookmark.title">{{bookmark.title}}</span>
+</div>
 

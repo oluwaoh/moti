@@ -59,8 +59,38 @@ bookmarks {
     position: absolute;
     top: 0;
     left: 0;
-    padding: 20px;
+    margin: 20px;
+    color: #555;
 }
+
+bookmarks .index {
+    font-size: 0.7rem;
+    color: #444;
+}
+
+bookmarks .bookmark {
+    margin: 5px;
+}
+
+bookmarks .bookmark.link {
+    cursor: pointer;
+}
+
+bookmarks .bookmark.link:hover {
+    background-color: #eee;
+}
+
+bookmarks .bookmark > span {
+    float:left;
+    margin-right: 5px;
+}
+
+bookmarks .bookmark:after {
+    content: '';
+    clear: both;
+    display: table;
+}
+
 
 /* styles for app/dob.html */
 
