@@ -11,6 +11,11 @@ angular.module('bookmarks', [])
         templateUrl: 'app/bookmark.html',
         controller: 'BookmarkCtrl',
         controllerAs: 'BookmarkCtrl',
+        link: function(scope, element) {
+            if(scope.bookmark.url) {
+                element.attr('href', scope.bookmark.url);
+            }
+        }
     };
 }])
 
