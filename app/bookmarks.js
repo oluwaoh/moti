@@ -5,96 +5,100 @@ angular.module('bookmarks', [])
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|chrome):/);
 }])
 
-.directive('bookmark', [function() {
-    /* TODO maybe break this into two directive one for links and one for directories */
-    return {
-        scope: { bookmark: '=' },
-        templateUrl: 'app/bookmark.html',
-        controller: 'BookmarkCtrl',
-        controllerAs: 'BookmarkCtrl',
-        link: function(scope, element) {
-            if(scope.bookmark.url) {
-                element.attr('href', scope.bookmark.url);
-            }
-        }
+.factory('KeyIndex', function() {
+    return function(index) {
+        return String.fromCharCode(48 + index);
+    };
+})
+
+.directive('bookmarkLink', [function() {
+    return { /* bookmark object must have url */
+        restrict: 'E',
+        scope: { bookmark: '=', hotKey: '=?' },
+        templateUrl: 'app/bookmark-link.html',
+        controller: 'BookmarkLinkCtrl',
     };
 }])
 
-.controller('BookmarkCtrl', [
-    '$window', '$scope', 'Bookmarks', 'Tabs',
-    function($window, $scope, Bookmarks, Tabs) {
+.controller('BookmarkLinkCtrl', [
+    '$window', '$scope', 'KeyIndex', function($window, $scope, KeyIndex) {
+    if($scope.hotKey) {
+        $scope.index = KeyIndex($scope.bookmark.index);
+        $scope.$on('key:'+$scope.index, function() {
+            $window.location = $scope.bookmark.url;
+        });
+    }
+}])
+
+.directive('bookmarkDir', [function() {
+    return { /* bookmark object must be folder */
+        restrict: 'E',
+        scope: { bookmark: '=', hotKey: '=?' },
+        templateUrl: 'app/bookmark-dir.html',
+        controller: 'BookmarkDirCtrl',
+        controllerAs: 'BookmarkDirCtrl',
+    };
+}])
+
+.controller('BookmarkDirCtrl', [
+    '$scope', 'Bookmarks', 'Tabs', 'KeyIndex',
+    function($scope, Bookmarks, Tabs, KeyIndex) {
         var ctrl = this;
         ctrl.click = function() {
-            if($scope.bookmark.url) {
-                $window.location = $scope.bookmark.url;
-            } else {
-                Bookmarks.getChildren($scope.bookmark.id)
-                .then(function(children){
-                    angular.forEach(children, function(bookmark) {
-                        if(bookmark.url) {
-                            Tabs.create({
-                                url: bookmark.url,
-                                selected: false
-                            });
-                        }
-                    });
-
-                    Tabs.closeCurrent();
-                });
-            }
+            ctrl.showChildren = !ctrl.showChildren;
         };
 
-        $scope.$on('keydown:'+$scope.bookmark.index, ctrl.click);
+        if($scope.hotKey) {
+            $scope.index = KeyIndex($scope.bookmark.index);
+            $scope.$on('key:'+$scope.index, function() {
+                Bookmarks($scope.bookmark.id).then(function(children){
+                    angular.forEach(children, function(bookmark) {
+                        if(bookmark.url) {
+                            Tabs.create({ url: bookmark.url });
+                        }
+                    });
+                    Tabs.closeCurrent();
+                });
+            });
+        }
     }
 ])
 
 .directive('bookmarks', [function() {
     return {
         restrict: 'E',
-        scope: {},
+        scope: { id: '=', hotKey: '=?' },
         templateUrl: 'app/bookmarks.html',
         controller: 'BookmarksCtrl',
         controllerAs: 'BookmarksCtrl',
-        bindToController: true,
     };
 }])
 
 .controller('BookmarksCtrl', [
-    'BookmarksBar', '$scope', '$window',
-    function(BookmarksBar, $scope, $window) {
+    'Bookmarks', '$scope', '$window',
+    function(Bookmarks, $scope, $window) {
         var ctrl = this;
         ctrl.bookmarksBar = {};
-        BookmarksBar.then(function(bookmarksBar) {
+        Bookmarks($scope.id).then(function(bookmarksBar) {
             ctrl.bookmarksBar = bookmarksBar;
         });
 
-        function keydown(event) {
-            $scope.$broadcast('keydown:'+(event.which - 48));
+        if($scope.hotKey) {
+            angular.element($window).on('keypress', keypress);
+
+            $scope.$on('$destroy', function() {
+                angular.element($window).off('keypress', keypress);
+            });
         }
 
-        angular.element($window).on('keydown', keydown);
-
-        $scope.$on('$destroy', function() {
-            angular.element($window).off('keydown', keydown);
-        });
+        function keypress(event) {
+            $scope.$broadcast('key:'+String.fromCharCode(event.charCode));
+        }
     }
 ])
 
-.factory('BookmarksBar', ['Bookmarks', function(Bookmarks) {
-    return Bookmarks.getSubTree('1');
-}])
-
-.service('Bookmarks', ['$q', function($q) {
-
-    this.getSubTree = function(id) {
-        var deferred = $q.defer();
-        chrome.bookmarks.getSubTree(id, function(subtree) {
-            deferred.resolve(subtree[0]); // skip root
-        });
-        return deferred.promise;
-    };
-
-    this.getChildren = function(id) {
+.factory('Bookmarks', ['$q', function($q) {
+    return function(id) {
         var deferred = $q.defer();
         chrome.bookmarks.getChildren(id, function(children) {
             deferred.resolve(children);

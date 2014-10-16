@@ -43,6 +43,7 @@ body, input {
     font-size: 6rem;
     line-height: 1;
     font-weight: 600;
+    -webkit-user-select: none;
 }
 
 .count sup {
@@ -62,32 +63,22 @@ bookmarks {
     margin: 20px;
 }
 
-bookmarks,
-bookmarks a {
+bookmarks a.bookmark {
     color: #555;
     text-decoration: none;
     cursor: pointer;
-}
-
-bookmarks .bookmark {
-    display: table;
-    margin: 5px;
+    -webkit-user-select: none;
+    display: block;
+    padding: 5px;
 }
 
 bookmarks .bookmark:hover {
     background-color: #eee;
 }
 
-bookmarks .bookmark > span {
-    display: table-cell;
+bookmarks .bookmark .item {
     vertical-align: middle;
-    padding: 5px;
-}
-
-bookmarks .index {
-    width: 20px;
-    font-size: 0.7rem;
-    color: #444;
+    margin: 5px;
 }
 
 /* styles for app/dob.html */

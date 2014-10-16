@@ -1,1 +1,8 @@
-<a ng-repeat="bookmark in BookmarksCtrl.bookmarksBar.children" bookmark="bookmark"></a>
+<div ng-repeat="bookmark in BookmarksCtrl.bookmarksBar">
+    <div ng-if="bookmark.url">
+        <bookmark-link bookmark="bookmark" hot-key="hotKey"></bookmark-link>
+    </div>
+    <div ng-if="!bookmark.url">
+        <bookmark-dir bookmark="bookmark" hot-key="hotKey"></bookmark-dir>
+    </div>
+</div>
