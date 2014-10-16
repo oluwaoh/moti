@@ -29,7 +29,7 @@ _Note: focusing the page is shift-tab in my browser (chrome on linux)._
     - [ ] Support numberpad numbers
     - [ ] Support more than 10 bookmarks
     - [ ] Add ability to navigate down into bookmark folders
-    - [ ] Add ability to "open all bookmarks" in a folder
+    - [x] Add ability to "open all bookmarks" in a folder
     - [ ] Make bookmark display/permissions optional
 
 Fork of [maccman/motivation](https://github.com/maccman/motivation)

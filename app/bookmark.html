@@ -1,5 +1,4 @@
-<div class="bookmark" ng-class="{ link: bookmark.url }"
-    ng-click="BookmarkCtrl.click()">
+<div class="bookmark" ng-click="BookmarkCtrl.click()">
     <span class="index">{{ bookmark.index }}</span>
     <span ng-if="bookmark.url">
         <img ng-src="chrome://favicon/{{ bookmark.url }}" width="16" height="16"/>

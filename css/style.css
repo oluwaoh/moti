@@ -66,6 +66,12 @@ bookmarks {
 bookmarks .bookmark {
     display: table;
     margin: 5px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+bookmarks .bookmark:hover {
+    background-color: #eee;
 }
 
 bookmarks .bookmark > span {
@@ -79,15 +85,6 @@ bookmarks .index {
     font-size: 0.7rem;
     color: #444;
 }
-
-bookmarks .bookmark.link {
-    cursor: pointer;
-}
-
-bookmarks .bookmark.link:hover {
-    background-color: #eee;
-}
-
 
 /* styles for app/dob.html */
 
