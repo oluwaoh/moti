@@ -60,14 +60,18 @@ bookmarks {
     top: 0;
     left: 0;
     margin: 20px;
+}
+
+bookmarks,
+bookmarks a {
     color: #555;
+    text-decoration: none;
+    cursor: pointer;
 }
 
 bookmarks .bookmark {
     display: table;
     margin: 5px;
-    text-decoration: none;
-    cursor: pointer;
 }
 
 bookmarks .bookmark:hover {
