@@ -17,7 +17,7 @@ Displays vertical view of bookmarks in the top right corner.
 
 To select a bookmark either click or focus on the page and press the key (0-9)
 of the the number to the left of the bookmark.
-_Note: focusing the page is shift-tab in my browser (chrome on linux)._
+*Note: focusing the page is just tab in my browser (chrome on linux).*
 
 
 ## TODO (reasons for forking)
