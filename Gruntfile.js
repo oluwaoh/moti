@@ -1,28 +1,44 @@
 module.exports = function(grunt) {
 
-  var jsFiles = 'app/**/*.js';
+    var jsFiles = 'app/**/*.js';
 
-  grunt.initConfig({
-    pkg: grunt.file.readJSON('package.json'),
-    uglify: {
-      options: {
-        banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n',
-        sourceMap: true,
-      },
-      dist: {
-        files: {
-          'dist/<%= pkg.name %>.min.js': [jsFiles]
+    grunt.initConfig({
+        pkg: grunt.file.readJSON('package.json'),
+        sass: {
+            dist: {
+                files: {
+                    'dist/<%= pkg.name %>.css': 'sass/main.scss'
+                },
+                options: {
+                    style: 'compressed',
+                }
+            }
+        },
+        uglify: {
+            options: {
+                sourceMap: true,
+            },
+            dist: {
+                files: {
+                    'dist/<%= pkg.name %>.min.js': [jsFiles]
+                }
+            }
+        },
+        watch: {
+            js: {
+                files: [jsFiles],
+                tasks: ['uglify']
+            },
+            css: {
+                files: ['sass/**/*.scss'],
+                tasks: ['sass']
+            }
         }
-      }
-    },
-    watch: {
-      files: [jsFiles],
-      tasks: ['uglify']
-    }
-  });
+    });
 
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-sass');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-watch');
 
-  grunt.registerTask('default', ['uglify']);
+    grunt.registerTask('default', ['uglify', 'sass']);
 };
