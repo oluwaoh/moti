@@ -2,9 +2,6 @@
 *:before,
 *:after {
     -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-    -o-box-sizing: border-box;
     box-sizing: border-box;
 }
 
@@ -13,10 +10,11 @@ html {
     margin: 0;
     padding: 0;
     height: 100%;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 body {
-    -moz-osx-font-smoothing: grayscale;
     -webkit-align-items: center;
     -webkit-flex-direction: column;
     -webkit-font-smoothing: antialiased;
@@ -43,7 +41,6 @@ body, input {
     font-size: 6rem;
     line-height: 1;
     font-weight: 600;
-    -webkit-user-select: none;
 }
 
 .count sup {
@@ -67,7 +64,6 @@ bookmarks a.bookmark {
     color: #555;
     text-decoration: none;
     cursor: pointer;
-    -webkit-user-select: none;
     display: block;
     padding: 5px;
 }
