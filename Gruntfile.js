@@ -1,13 +1,13 @@
 module.exports = function(grunt) {
 
-    var jsFiles = 'app/**/*.js';
+    var jsFiles = 'src/**/*.js';
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         sass: {
             dist: {
                 files: {
-                    'dist/<%= pkg.name %>.css': 'sass/main.scss'
+                    'dist/<%= pkg.name %>.css': 'src/main.scss'
                 },
                 options: {
                     style: 'compressed',
@@ -30,7 +30,7 @@ module.exports = function(grunt) {
                 tasks: ['uglify']
             },
             css: {
-                files: ['sass/**/*.scss'],
+                files: ['src/**/*.scss'],
                 tasks: ['sass']
             }
         }
