@@ -2,3 +2,4 @@ extension/build/
 node_modules/
 .sass-cache/
 .build-cache/
+bower_components/
