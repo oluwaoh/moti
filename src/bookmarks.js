@@ -15,7 +15,7 @@ angular.module('bookmarks', [])
     return { /* bookmark object must have url */
         restrict: 'E',
         scope: { bookmark: '=', hotKey: '=?' },
-        templateUrl: 'app/bookmark-link.html',
+        templateUrl: 'src/bookmark-link.html',
         controller: 'BookmarkLinkCtrl',
     };
 }])
@@ -34,7 +34,7 @@ angular.module('bookmarks', [])
     return { /* bookmark object must be folder */
         restrict: 'E',
         scope: { bookmark: '=', hotKey: '=?' },
-        templateUrl: 'app/bookmark-dir.html',
+        templateUrl: 'src/bookmark-dir.html',
         controller: 'BookmarkDirCtrl',
         controllerAs: 'BookmarkDirCtrl',
     };
@@ -68,7 +68,7 @@ angular.module('bookmarks', [])
     return {
         restrict: 'E',
         scope: { id: '=', hotKey: '=?' },
-        templateUrl: 'app/bookmarks.html',
+        templateUrl: 'src/bookmarks.html',
         controller: 'BookmarksCtrl',
         controllerAs: 'BookmarksCtrl',
     };

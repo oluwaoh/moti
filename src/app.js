@@ -7,7 +7,7 @@ angular.module('app', ['bookmarks'])
 
 .directive('dob', [function() { // directive to input date of birth
     return {
-        templateUrl: 'app/dob.html',
+        templateUrl: 'src/dob.html',
         controller: ['$scope', 'age', function($scope, age) {
             $scope.form = {};
             $scope.submit = function() {
@@ -20,7 +20,7 @@ angular.module('app', ['bookmarks'])
 
 .directive('age', [function() { // directive to display age
     return {
-        templateUrl: 'app/age.html',
+        templateUrl: 'src/age.html',
         controllerAs: 'ctrl',
         controller: ['age', '$interval', function(age, $interval) {
             this.age = age.getAge();

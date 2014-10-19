@@ -1,3 +1,4 @@
-dist/
+extension/build/
 node_modules/
 .sass-cache/
+.build-cache/
