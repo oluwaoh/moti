@@ -6,10 +6,7 @@ angular.module('app', [
 ])
 
 .config(['$stateProvider', function($stateProvider) {
-
-        // Configure tabs as states
         $stateProvider
-
         .state('counter', {
             template: '<div counter></div>'
         })
