@@ -22,7 +22,8 @@ module.exports = function(grunt) {
             },
             bower: {
                 src: [
-                    'bower_components/angular/angular.js'
+                    'bower_components/angular/angular.js',
+                    'bower_components/angular-ui-router/release/angular-ui-router.js',
                 ],
                 dest: '<%= bowerBuild %>'
             },

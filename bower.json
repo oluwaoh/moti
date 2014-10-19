@@ -2,7 +2,9 @@
   "name": "motivation",
   "version": "0.0.0",
   "homepage": "https://github.com/devm33/motivation",
-  "authors": [ "Devraj Mehta" ],
+  "authors": [
+    "Devraj Mehta"
+  ],
   "description": "chrome new tab replacement",
   "license": "MIT",
   "private": true,
@@ -14,6 +16,7 @@
     "tests"
   ],
   "dependencies": {
-    "angular": "~1.2.26"
+    "angular": "~1.2.26",
+    "angular-ui-router": "~0.2.11"
   }
 }

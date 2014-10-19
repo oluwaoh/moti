@@ -1,16 +1,28 @@
 angular.module('app', [
+    'ui.router',
     'age',
     'counter',
     'dob-form',
 ])
 
-.directive('app', [function() {
-    return {
-        restrict: 'E',
-        templateUrl: 'src/app/app.html',
-        controllerAs: 'app',
-        controller: ['age', function(age) {
-            this.hasDob = age.hasDob;
-        }]
-    };
+.config(['$stateProvider', function($stateProvider) {
+
+        // Configure tabs as states
+        $stateProvider
+
+        .state('counter', {
+            template: '<div counter></div>'
+        })
+        .state('dob-form', {
+            template: '<div dob-form></div>'
+        });
+    }
+])
+
+.run(['$state', 'age', function($state, age) {
+    if(age.hasDob()) {
+        $state.go('counter');
+    } else {
+        $state.go('dob-form');
+    }
 }]);
