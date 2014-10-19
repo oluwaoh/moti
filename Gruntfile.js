@@ -4,21 +4,30 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
 
         appName: 'app', // main angular module
-        appSrc: 'src/**.js',
+        appSrc: 'src/**/*.js',
         buildDir: 'extension/build',
         tmp: '.build-cache',
         appBuild: '<%= buildDir %>/<%= pkg.name  %>',
-        templateSrc: 'src/**.html',
+        templateSrc: 'src/**/*.html',
         templateBuild: '<%= tmp %>/templates.js',
+        bowerBuild: '<%= buildDir %>/bower_components.js',
 
-        copy: {
-            bower: {
-                expand: true,
-                flatten: true,
+        concat: {
+            app: {
                 src: [
-                    'bower_components/angular/angular{,.min}.js{,.map}'
+                    '<%= appSrc %>',
+                    '<%= templateBuild %>'
                 ],
-                dest: '<%= buildDir %>/',
+                dest: '<%= appBuild %>.js'
+            },
+            bower: {
+                src: [
+                    'bower_components/angular/angular.js'
+                ],
+                dest: '<%= bowerBuild %>'
+            },
+            options: {
+                stripBanners: true,
             }
         },
         sass: {
@@ -49,18 +58,6 @@ module.exports = function(grunt) {
                 }
             }
         },
-        concat: {
-            app: {
-                src: [
-                    '<%= appSrc %>',
-                    '<%= templateBuild %>'
-                ],
-                dest: '<%= appBuild %>.js'
-            },
-            options: {
-                stripBanners: true,
-            }
-        },
         uglify: {
             options: {
                 sourceMap: true,
@@ -72,13 +69,13 @@ module.exports = function(grunt) {
             }
         },
         watch: {
-            js: {
+            app: {
                 files: ['<%= appSrc %>'],
-                tasks: ['concat', 'uglify']
+                tasks: ['concat:app', 'uglify']
             },
             bower: {
-                files: ['<%= copy.bower.src  %>'],
-                tasks: ['copy:bower']
+                files: ['<%= concat.bower.src  %>'],
+                tasks: ['concat:bower']
             },
             css: {
                 files: ['src/**.scss'],
@@ -86,14 +83,15 @@ module.exports = function(grunt) {
             },
             html: {
                 files: ['<%= templateSrc %>'],
-                tasks: ['ngtemplates', 'concat', 'uglify']
+                tasks: ['ngtemplates', 'concat:app', 'uglify']
             }
-        }
+        },
+        clean: ['<%= tmp %>', '<%= buildDir %>']
     });
 
     require('time-grunt')(grunt);
 
     require('load-grunt-tasks')(grunt);
 
-    grunt.registerTask('default', ['ngtemplates', 'copy', 'concat', 'uglify', 'sass']);
+    grunt.registerTask('default', ['ngtemplates', 'concat', 'uglify', 'sass']);
 };
