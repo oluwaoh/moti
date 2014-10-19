@@ -5,16 +5,24 @@ module.exports = function(grunt) {
 
         appName: 'app', // main angular module
         appSrc: 'src/**.js',
-        appDist: 'extension/build',
+        buildDir: 'extension/build',
         tmp: '.build-cache',
-        appBuild: '<%= tmp %>/<%= appName %>',
+        appBuild: '<%= buildDir %>/<%= pkg.name  %>',
         templateSrc: 'src/**.html',
         templateBuild: '<%= tmp %>/templates.js',
 
+        copy: {
+            bower: {
+                src: [
+                    'bower_components/angular/angular.mins.js'
+                ],
+                dest: '<%= buildDir %>/'
+            }
+        },
         sass: {
             dist: {
                 files: {
-                    '<%= appDist %>/<%= pkg.name %>.css': 'src/main.scss'
+                    '<%= buildDir %>/<%= pkg.name %>.css': 'src/main.scss'
                 },
                 options: {
                     style: 'compressed',
@@ -45,15 +53,7 @@ module.exports = function(grunt) {
                     '<%= appSrc %>',
                     '<%= templateBuild %>'
                 ],
-                dest: '<%= appBuild %>.js',
-            },
-            build: {
-                files: {
-                    '<%= appDist %>/<%= pkg.name %>.min.js': [
-                        'bower_components/angular/angular.min.js',
-                        '<%= appBuild %>.min.js',
-                    ]
-                }
+                dest: '<%= appBuild %>.js'
             },
             options: {
                 sourceMap: true,
@@ -75,6 +75,10 @@ module.exports = function(grunt) {
                 files: ['<%= appSrc %>'],
                 tasks: ['concat', 'uglify']
             },
+            bower: {
+                files: ['<%= copy.bower.src  %>'],
+                tasks: ['copy:bower']
+            },
             css: {
                 files: ['src/**.scss'],
                 tasks: ['sass']
@@ -90,5 +94,5 @@ module.exports = function(grunt) {
 
     require('load-grunt-tasks')(grunt);
 
-    grunt.registerTask('default', ['ngtemplates', 'concat:app', 'uglify', 'concat:build', 'sass']);
+    grunt.registerTask('default', ['ngtemplates', 'copy', 'concat', 'uglify', 'sass']);
 };
