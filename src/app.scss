@@ -1,0 +1,15 @@
+/* Main sass file for app */
+
+$body-font: 'Avenir', 'helvetica neue', helvetica, arial, sans-serif;
+
+$header-color: #B0B5B9;
+$counter-color: #494949;
+
+$bookmark-color: #555555;
+$bookmark-hover-color: #EEeeEE;
+
+@import 'reset';
+
+@import 'counter/counter';
+@import 'dob-form/dob-form';
+@import 'bookmarks/bookmarks';

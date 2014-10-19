@@ -1,0 +1,13 @@
+.count {
+    color: $counter-color;
+    font-size: 6rem;
+
+    sup {
+        font-size: 2.4rem;
+        margin-left: 7px;
+        /* styles below to prevent wiggling by decimal */
+        display: inline-block;
+        width: 210px; /* coupled to font-size and # of decimal places */
+    }
+}
+

@@ -1,0 +1,37 @@
+form {
+    padding-top: 0.5rem;
+    display: -webkit-flex;
+    -webkit-flex-direction: row;
+    -webkit-justify-content: center;
+}
+
+label {
+    display: block;
+}
+
+input, button {
+    padding: 0.375rem 0.75rem;
+    font-size: 1.5rem;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+input {
+    margin-right: 0.5rem;
+    box-sizing: border-box;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 0.25rem;
+    border-color: #CCC;
+    background-color: #FFF;
+}
+
+button {
+    outline: none;
+    display: block;
+    cursor: pointer;
+    color: #FFF;
+    border: none;
+    border-radius: 0.25rem;
+    background-color: #0BE;
+}
