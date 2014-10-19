@@ -4,7 +4,7 @@ Motivation
 Your age.
 
 
-![](screenshot.png)
+![](extension/screenshot.png)
 
 
 ## Usage
