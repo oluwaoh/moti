@@ -13,10 +13,12 @@ module.exports = function(grunt) {
 
         copy: {
             bower: {
+                expand: true,
+                flatten: true,
                 src: [
-                    'bower_components/angular/angular.mins.js'
+                    'bower_components/angular/angular.min.js'
                 ],
-                dest: '<%= buildDir %>/'
+                dest: '<%= buildDir %>/',
             }
         },
         sass: {
