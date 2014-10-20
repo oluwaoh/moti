@@ -24,6 +24,7 @@ body {
 body, input {
     display: -webkit-flex;
     font-family: $body-font;
+    background-color: $body-bg-color;
 }
 
 h1,h2,h3 {
