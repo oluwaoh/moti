@@ -6,6 +6,7 @@ Your age.
 
 ![](extension/screenshot.png)
 
+[Link to extension in chrome web store](https://chrome.google.com/webstore/detail/motivation-devm33-fork/edaphnidncfdooaldnhdmijjephlbehh)
 
 ## Usage
 
