@@ -1,6 +1,6 @@
 angular.module('age', [])
 
-.service('age', [function() {
+.service('age', function() {
 
     if(localStorage.dob) {
         this.dob = new Date(parseInt(localStorage.dob));
@@ -25,4 +25,4 @@ angular.module('age', [])
         this.dob = new Date(dob);
         localStorage.dob = this.dob.getTime();
     };
-}]);
+});

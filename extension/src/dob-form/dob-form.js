@@ -4,13 +4,13 @@ angular.module('dob-form', ['age'])
     return {
         templateUrl: 'src/dob-form/dob-form.html',
         controllerAs: 'ctrl',
-        controller: ['$state', 'age', function($state, age) {
+        controller: function($state, age) {
             var ctrl = this;
             ctrl.form = {};
             ctrl.submit = function() {
                 age.save(ctrl.form.dob);
                 $state.go('counter');
             };
-        }]
+        }
     };
 });
