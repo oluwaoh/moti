@@ -4,11 +4,11 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
 
         appName: 'app', // main angular module
-        appSrc: 'src/**/*.js',
+        appSrc: 'extension/src/**/*.js',
         buildDir: 'extension/build',
         tmp: '.build-cache',
         appBuild: '<%= buildDir %>/<%= pkg.name  %>',
-        templateSrc: 'src/**/*.html',
+        templateSrc: 'extension/src/**/*.html',
         templateBuild: '<%= tmp %>/templates.js',
         bowerBuild: '<%= buildDir %>/bower_components.js',
 
@@ -34,7 +34,7 @@ module.exports = function(grunt) {
         sass: {
             dist: {
                 files: {
-                    '<%= buildDir %>/<%= pkg.name %>.css': 'src/app.scss'
+                    '<%= buildDir %>/<%= pkg.name %>.css': 'extension/src/app.scss'
                 },
                 options: {
                     style: 'compressed',
@@ -79,7 +79,7 @@ module.exports = function(grunt) {
                 tasks: ['concat:bower']
             },
             css: {
-                files: ['src/**.scss'],
+                files: ['extension/src/**/*.scss'],
                 tasks: ['sass']
             },
             html: {
@@ -94,5 +94,5 @@ module.exports = function(grunt) {
 
     require('load-grunt-tasks')(grunt);
 
-    grunt.registerTask('default', ['ngtemplates', 'concat', 'uglify', 'sass']);
+    grunt.registerTask('default', ['newer:ngtemplates', 'newer:concat', 'newer:uglify', 'sass']);
 };
