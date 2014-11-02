@@ -3,7 +3,8 @@ angular.module('bookmarks', [])
 .config(function($compileProvider) {
     // need to access chrome://favicon/ for favicon images
     // and access to chrome-extension://* for local images
-    $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|chrome|chrome-extension):/);
+    $compileProvider
+    .imgSrcSanitizationWhitelist(/^\s*(https?|ftp|chrome|chrome-extension):/);
 })
 
 .factory('KeyIndex', function() {
@@ -50,23 +51,17 @@ angular.module('bookmarks', [])
     return Link;
 })
 
-.factory('Dir', function($rootScope) { // Bookmarks, Tabs) {
+.factory('Dir', function($rootScope, OpenBookmarksInTabs) {
     function Dir(bookmark) {
         this.bookmark = bookmark;
         this.iconUrl = 'img/dir-icon.png';
     }
-    Dir.prototype.click = function() {
-        $rootScope.$broadcast('bookmarks', this.bookmark.id);
-        // TODO allow middle click, right click on dir to open all
-        // could check event, first arg?, for middle click
-        // Bookmarks(this.bookmark.id).then(function(children){
-        //     angular.forEach(children, function(bookmark) {
-        //         if(bookmark.url) {
-        //             Tabs.create({ url: bookmark.url });
-        //         }
-        //     });
-        //     Tabs.closeCurrent();
-        // });
+    Dir.prototype.click = function(event) {
+        if(event.which === 2) { // open all in tabs on middle click
+            OpenBookmarksInTabs(this.bookmark.id);
+        } else {
+            $rootScope.$broadcast('bookmarks', this.bookmark.id);
+        }
     };
     return Dir;
 })
@@ -85,19 +80,14 @@ angular.module('bookmarks', [])
     return UpOneLevel;
 })
 
-.factory('OpenAll', function(Tabs, $rootScope) {
+.factory('OpenAll', function(OpenBookmarksInTabs) {
     function OpenAll(bookmark) {
         this.iconUrl = 'img/open-all-icon.png';
         this.bookmark = { title: 'open all' };
         this.bookmarks = bookmark.bookmarks;
     }
     OpenAll.prototype.click = function() {
-        angular.forEach(this.bookmarks, function(bookmark) {
-            if(bookmark.url) {
-                Tabs.create({ url: bookmark.url });
-            }
-        });
-        Tabs.closeCurrent();
+        OpenBookmarksInTabs(this.bookmarks);
     };
     return OpenAll;
 })
@@ -158,6 +148,22 @@ angular.module('bookmarks', [])
         });
         return deferred.promise;
     };
+})
+
+.factory('OpenBookmarksInTabs', function(Tabs, Bookmarks) {
+    function openAll(idOrArray) {
+        if(angular.isArray(idOrArray)) {
+            Tabs.closeCurrent();
+            angular.forEach(idOrArray, function(bookmark) {
+                if(bookmark.url) {
+                    Tabs.create({ url: bookmark.url });
+                }
+            });
+        } else {
+            Bookmarks.getChildren(idOrArray).then(openAll);
+        }
+    }
+    return openAll;
 })
 
 .service('Tabs', function($q) {
