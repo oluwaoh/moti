@@ -4,7 +4,7 @@ bookmarks {
     left: 0;
     margin: 20px;
 
-    a.bookmark {
+    a[bookmark] {
         color: $bookmark-color;
         text-decoration: none;
         cursor: pointer;

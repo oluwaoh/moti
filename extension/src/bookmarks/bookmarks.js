@@ -2,7 +2,8 @@ angular.module('bookmarks', [])
 
 .config(function($compileProvider) {
     // need to access chrome://favicon/ for favicon images
-    $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|chrome):/);
+    // and access to chrome-extension://* for local images
+    $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|chrome|chrome-extension):/);
 })
 
 .factory('KeyIndex', function() {
@@ -11,53 +12,60 @@ angular.module('bookmarks', [])
     };
 })
 
-.directive('bookmarkLink', function() {
-    return { /* bookmark object must have url */
-        restrict: 'E',
-        scope: { bookmark: '=', hotKey: '=?' },
-        templateUrl: 'src/bookmarks/bookmark-link.html',
-        controller: 'BookmarkLinkCtrl',
+.directive('bookmark', function() {
+    return {
+        scope: { bookmark: '=' },
+        templateUrl: 'src/bookmarks/bookmark.html',
+        controller: 'BookmarkCtrl',
+        controllerAs: 'ctrl',
     };
 })
 
-.controller('BookmarkLinkCtrl', function($window, $scope, KeyIndex) {
-    if($scope.hotKey) {
-        $scope.index = KeyIndex($scope.bookmark.index);
-        $scope.$on('key:'+$scope.index, function() {
-            $window.location = $scope.bookmark.url;
-        });
+.controller('BookmarkCtrl', function($scope, $element, KeyIndex, Link, Dir) {
+    if($scope.bookmark.url) {
+        this.model = new Link($scope.bookmark);
+        $element.attr('href', $scope.bookmark.url);
+    } else {
+        this.model = new Dir($scope.bookmark);
+        $element.on('click', this.model.click.bind(this.model));
+        $scope.$on('$destroy', function() { $element.off(); });
     }
+    this.index = KeyIndex($scope.bookmark.index);
+    $scope.$on('key:' + this.index, this.model.click.bind(this.model));
 })
 
-.directive('bookmarkDir', function() {
-    return { /* bookmark object must be folder */
-        restrict: 'E',
-        scope: { bookmark: '=', hotKey: '=?' },
-        templateUrl: 'src/bookmarks/bookmark-dir.html',
-        controller: 'BookmarkDirCtrl',
-        controllerAs: 'BookmarkDirCtrl',
+.factory('Link', function($window) {
+    function Link(bookmark) { // must have bookmark.url
+        this.bookmark = bookmark;
+        this.iconUrl = 'chrome://favicon/' + bookmark.url;
+    }
+    Link.prototype.click = function() {
+        $window.location = this.bookmark.url;
     };
+    return Link;
 })
 
-.controller('BookmarkDirCtrl', function($scope, Bookmarks, Tabs, KeyIndex) {
-    var ctrl = this;
-    ctrl.click = function() {
-        ctrl.showChildren = !ctrl.showChildren;
-    };
-
-    if($scope.hotKey) {
-        $scope.index = KeyIndex($scope.bookmark.index);
-        $scope.$on('key:'+$scope.index, function() {
-            Bookmarks($scope.bookmark.id).then(function(children){
-                angular.forEach(children, function(bookmark) {
-                    if(bookmark.url) {
-                        Tabs.create({ url: bookmark.url });
-                    }
-                });
-                Tabs.closeCurrent();
+.factory('Dir', function(Bookmarks, Tabs) {
+    function Dir(bookmark) {
+        this.bookmark = bookmark;
+        this.iconUrl = 'img/dir-icon.png';
+    }
+    Dir.prototype.click = function() {
+        // TODO make this navigate into folder
+        // TODO add first to items to bookmarks list for:
+        //  - up one level
+        //  0 open all in tabs (this)
+        // (note: could check event, first arg?, for middle click
+        Bookmarks(this.bookmark.id).then(function(children){
+            angular.forEach(children, function(bookmark) {
+                if(bookmark.url) {
+                    Tabs.create({ url: bookmark.url });
+                }
             });
+            Tabs.closeCurrent();
         });
-    }
+    };
+    return Dir;
 })
 
 .directive('bookmarks', function() {
