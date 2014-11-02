@@ -1,4 +1,4 @@
-angular.module('bookmarks', [])
+angular.module('bookmarks', ['focus-check'])
 
 .config(function($compileProvider) {
     // need to access chrome://favicon/ for favicon images
