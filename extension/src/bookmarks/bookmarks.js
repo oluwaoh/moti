@@ -3,6 +3,8 @@ angular.module('bookmarks', [
     'context-menu',
 ])
 
+.constant('LEADER_KEY_CODE', 32) // space bar as leader
+
 .config(function($compileProvider) {
     // need to access chrome://favicon/ for favicon images
     // and access to chrome-extension://* for local images
@@ -60,7 +62,7 @@ angular.module('bookmarks', [
         this.iconUrl = 'chrome://favicon/' + bookmark.url;
     }
     Link.prototype = new Bookmark();
-    Link.prototype.click = function(event) {
+    Link.prototype.click = function() {
         $window.location = this.bookmark.url;
     };
     return Link;
@@ -72,8 +74,9 @@ angular.module('bookmarks', [
         this.iconUrl = 'img/dir-icon.png';
     }
     Dir.prototype = new Bookmark();
-    Dir.prototype.click = function(event) {
-        if(event.which === 2) { // open all in tabs on middle click
+    Dir.prototype.click = function(event, keyEvent) {
+        if(event.which === 2 || // open all in tabs on middle click
+           (keyEvent && keyEvent.leader)) { // or with leader key press
             OpenBookmarksInTabs(this.bookmark.id);
         } else {
             $rootScope.$broadcast('bookmarks', this.bookmark.id);
@@ -118,7 +121,7 @@ angular.module('bookmarks', [
     };
 })
 
-.controller('BookmarksCtrl', function(Bookmarks, $scope, $window) {
+.controller('BookmarksCtrl', function(Bookmarks, $scope, $window, LEADER_KEY_CODE) {
     var ctrl = this;
     function load(id) {
         ctrl.id = id;
@@ -136,10 +139,22 @@ angular.module('bookmarks', [
     }
     load($scope.id);
     $scope.$on('bookmarks', function(event, id) { load(id); });
-    angular.element($window).on('keypress', function(event) {
-        $scope.$broadcast('key:'+String.fromCharCode(event.charCode));
+    var leaderPressedPrev;
+    function key(event) {
+        if(event.keyCode === LEADER_KEY_CODE) {
+            leaderPressedPrev = true;
+        } else {
+            if(leaderPressedPrev) {
+                leaderPressedPrev = false;
+                event.leader = true;
+            }
+            $scope.$broadcast('key:'+String.fromCharCode(event.charCode), event);
+        }
+    }
+    angular.element($window).on('keypress', key);
+    $scope.$on('$destroy', function() {
+        angular.element($window).off('keypress', key);
     });
-    $scope.$on('$destroy', function() { angular.element($window).off(); });
     function hasLink(bookmarks) {
         for(var i = 0; i < bookmarks.length; i++) {
             if(bookmarks[i].url) {
