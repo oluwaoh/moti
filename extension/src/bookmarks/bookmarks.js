@@ -1,4 +1,7 @@
-angular.module('bookmarks', ['focus-check'])
+angular.module('bookmarks', [
+    'focus-check',
+    'context-menu',
+])
 
 .config(function($compileProvider) {
     // need to access chrome://favicon/ for favicon images
@@ -40,22 +43,35 @@ angular.module('bookmarks', ['focus-check'])
     $scope.$on('key:' + this.index, this.model.click.bind(this.model));
 })
 
-.factory('Link', function($window) {
+.factory('Bookmark', function(Bookmarks) {
+    function Bookmark() {} // 'abstract' super, no constructor
+    Bookmark.prototype.delete = function() {
+        Bookmarks.remove(this.bookmark.id);
+        Bookmarks.currentList.splice(
+            Bookmarks.currentList.indexOf(this.bookmark), 1
+        );
+    };
+    return Bookmark;
+})
+
+.factory('Link', function(Bookmark, $window) {
     function Link(bookmark) { // must have bookmark.url
         this.bookmark = bookmark;
         this.iconUrl = 'chrome://favicon/' + bookmark.url;
     }
-    Link.prototype.click = function() {
+    Link.prototype = new Bookmark();
+    Link.prototype.click = function(event) {
         $window.location = this.bookmark.url;
     };
     return Link;
 })
 
-.factory('Dir', function($rootScope, OpenBookmarksInTabs) {
+.factory('Dir', function(Bookmark, $rootScope, OpenBookmarksInTabs) {
     function Dir(bookmark) {
         this.bookmark = bookmark;
         this.iconUrl = 'img/dir-icon.png';
     }
+    Dir.prototype = new Bookmark();
     Dir.prototype.click = function(event) {
         if(event.which === 2) { // open all in tabs on middle click
             OpenBookmarksInTabs(this.bookmark.id);
@@ -115,6 +131,7 @@ angular.module('bookmarks', ['focus-check'])
                 ctrl.bookmarks.push({ model: 'OpenAll', bookmarks: bookmarks });
             }
             ctrl.bookmarks = ctrl.bookmarks.concat(bookmarks);
+            Bookmarks.currentList = ctrl.bookmarks;
         });
     }
     load($scope.id);
@@ -141,12 +158,15 @@ angular.module('bookmarks', ['focus-check'])
         });
         return deferred.promise;
     };
-    this.get= function(id) {
+    this.get = function(id) {
         var deferred = $q.defer();
         chrome.bookmarks.get(id, function(bookmark) {
             deferred.resolve(bookmark[0]);
         });
         return deferred.promise;
+    };
+    this.remove = function(id) {
+        chrome.bookmarks.remove(id);
     };
 })
 

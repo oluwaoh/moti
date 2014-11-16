@@ -1,7 +1,19 @@
 context-menu {
     position: fixed;
+    display: none;
+}
+
+context-menu.show {
+    display: block;
+    background-color: white;
+    color: black;
 }
 
 context-menu-item {
     display: block;
+    padding: 10px;
+}
+
+context-menu-item:hover {
+    background-color: #ccc;
 }
