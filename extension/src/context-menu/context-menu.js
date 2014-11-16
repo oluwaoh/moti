@@ -7,20 +7,23 @@ angular.module('context-menu', [])
         transclude: true,
         template: '<div ng-transclude></div>',
         controller: function($scope, $element, $window) {
-            angular.element($window).on('click', function() {
-                $element.removeClass('show');
-            });
-            $element.parent().on('contextmenu', function(event) {
+            function open(event) {
                 event.preventDefault();
                 $element.addClass('show');
                 $element.css({
                     top: event.pageY + 'px',
                     left: event.pageX + 'px',
                 });
-            });
+            }
+            function close() {
+                $element.removeClass('show');
+            }
+            $element.parent().on('contextmenu', open);
+            angular.element($window).on('click', close);
+
             $scope.$on('$destroy', function() {
-                $element.parent().off();
-                angular.element($window).off();
+                $element.parent().off('contextmenu', open);
+                angular.element($window).off('click', close);
             });
         }
     };
