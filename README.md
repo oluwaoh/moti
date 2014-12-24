@@ -29,15 +29,18 @@ the bookmark.
 
 ## TODO (reasons for forking)
 
-- [x] Fix wiggling back and forth of age.
+- [x] Fix wiggling back and forth of age text
 - [ ] Add optional access to bookmarks
     - [x] Display clickable shortcuts with favicons
     - [x] Add hotkeys to open shortcuts
     - [x] Support more than 10 bookmarks
-    - [x] Add ability to navigate down into bookmark folders
-    - [x] Add ability to "open all bookmarks" in a folder
-    - [ ] Add ability to drag to reorder bookmarks
-    - [ ] Persist options and data across devices using storage api
-    - [ ] Make bookmark display/permissions optional
+    - [x] Add navigatng down into bookmark folders
+    - [x] Add "open all bookmarks" in a folder
+    - [ ] Add editing
+    - [ ] Add dragging to reorder bookmarks
+    - [ ] Listen to all changes of bookmarks and update, live!
+    - [ ] Make bookmark display/permissions optional (via settings)
+- [ ] Add settings to change colors of background, text, etc.
+- [ ] Persist settings and age across devices using storage api
 
 Fork of [maccman/motivation](https://github.com/maccman/motivation)
