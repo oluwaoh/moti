@@ -6,7 +6,7 @@ angular.module('context-menu', [])
         scope: {},
         transclude: true,
         template: '<div ng-transclude></div>',
-        controller: function($scope, $element, $window, $rootScope, $window) {
+        controller: function($scope, $element, $window, $rootScope) {
             function open(event) {
                 $rootScope.$emit('contextmenu');
                 event.preventDefault();
@@ -41,12 +41,14 @@ angular.module('context-menu', [])
         require: '^contextMenu',
         scope: { handler: '&' },
         transclude: true,
-        template: '<div ng-transclude></div>',
-        link: function(scope, element, attrs, parentCtrl) {
-            element.on('click', function(event) {
-                scope.handler();
-                event.preventDefault();
-            });
-        }
+        template: '<div ng-click="ctrl.click($event)"><ng-transclude/></div>',
+        controller: function($scope) {
+            this.click = function($event) {
+                $scope.$emit('contextmenu');
+                $event.stopPropagation();
+                $scope.handler();
+            };
+        },
+        controllerAs: 'ctrl'
     };
 });
