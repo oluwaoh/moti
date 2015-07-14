@@ -46,9 +46,10 @@ angular.module('context-menu', [])
         template: '<div ng-click="ctrl.click($event)"><ng-transclude/></div>',
         controller: function($scope) {
             this.click = function($event) {
-                $scope.$emit('contextmenu');
+                $event.preventDefault();
                 $event.stopPropagation();
                 $scope.handler();
+                $scope.$emit('contextmenu');
             };
         },
         controllerAs: 'ctrl'
