@@ -8,6 +8,8 @@ angular.module('context-menu', [])
         template: '<div ng-transclude></div>',
         controller: function($scope, $element, $window, $rootScope) {
             function open(event) {
+                /* TODO for effiency delay transclusion on content until open
+                 * is called. Will require link function */
                 $rootScope.$emit('contextmenu');
                 event.preventDefault();
                 $element.addClass('show');
