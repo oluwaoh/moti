@@ -50,8 +50,7 @@ angular.module('bookmarks', [
     Bookmark.prototype.delete = function() {
         if(confirm('Are you sure you want to delete ' + (
             this.bookmark.title || this.bookmark.url) + '?')) {
-
-            Bookmarks.remove(this.bookmark.id);
+            this.remove();
             Bookmarks.currentList.splice(
                 Bookmarks.currentList.indexOf(this.bookmark), 1
             );
@@ -63,7 +62,7 @@ angular.module('bookmarks', [
     return Bookmark;
 })
 
-.factory('Link', function(Bookmark, $window) {
+.factory('Link', function(Bookmarks, Bookmark, $window) {
     function Link(bookmark) { // must have bookmark.url
         this.bookmark = bookmark;
         this.iconUrl = 'chrome://favicon/' + bookmark.url;
@@ -72,10 +71,13 @@ angular.module('bookmarks', [
     Link.prototype.click = function() {
         $window.location = this.bookmark.url;
     };
+    Link.prototype.remove = function () {
+        Bookmarks.remove(this.bookmark.id);
+    };
     return Link;
 })
 
-.factory('Dir', function(Bookmark, $rootScope, OpenBookmarksInTabs) {
+.factory('Dir', function(Bookmarks, Bookmark, $rootScope, OpenBookmarksInTabs) {
     function Dir(bookmark) {
         this.bookmark = bookmark;
         this.iconUrl = 'img/dir-icon.png';
@@ -88,6 +90,9 @@ angular.module('bookmarks', [
         } else {
             $rootScope.$broadcast('bookmarks', this.bookmark.id);
         }
+    };
+    Dir.prototype.remove = function () {
+        Bookmarks.removeTree(this.bookmark.id);
     };
     return Dir;
 })
@@ -173,6 +178,7 @@ angular.module('bookmarks', [
 })
 
 .service('Bookmarks', function($q) {
+    var Bookmarks = this;
     this.getChildren = function(id) {
         var deferred = $q.defer();
         chrome.bookmarks.getChildren(id, function(children) {
@@ -189,6 +195,9 @@ angular.module('bookmarks', [
     };
     this.remove = function(id) {
         chrome.bookmarks.remove(id);
+    };
+    this.removeTree = function(id) {
+        chrome.bookmarks.removeTree(id);
     };
 })
 
