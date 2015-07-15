@@ -48,13 +48,10 @@ angular.module('bookmarks', [
 .factory('Bookmark', function(Bookmarks) {
     function Bookmark() {} // 'abstract' super, no constructor
     Bookmark.prototype.delete = function() {
-        if(confirm('Are you sure you want to delete ' + (
-            this.bookmark.title || this.bookmark.url) + '?')) {
-            this.remove();
-            Bookmarks.currentList.splice(
-                Bookmarks.currentList.indexOf(this.bookmark), 1
-            );
-        }
+        this.remove();
+        Bookmarks.currentList.splice(
+            Bookmarks.currentList.indexOf(this.bookmark), 1
+        );
     };
     Bookmark.prototype.edit = function() {
         console.log('TODO implement edit');
