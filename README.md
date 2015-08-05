@@ -36,6 +36,7 @@ the bookmark.
     - [x] Support more than 10 bookmarks
     - [x] Add navigatng down into bookmark folders
     - [x] Add "open all bookmarks" in a folder
+    - [ ] Make up-one-level use up arrow
     - [ ] Add editing
     - [ ] Add dragging to reorder bookmarks
     - [ ] Listen to all changes of bookmarks and update, live!
