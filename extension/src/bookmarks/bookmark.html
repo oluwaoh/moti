@@ -1,7 +1,7 @@
-<span class="index item">{{::ctrl.index}}</span>
-<img class="item" ng-src="{{::ctrl.model.iconUrl}}" width="16" height="16" alt="{{::ctrl.model.bookmark.title}}"/>
-<span class="item" ng-if="::ctrl.model.bookmark.title">{{::ctrl.model.bookmark.title}}</span>
-<context-menu ng-if="::ctrl.model.bookmark.id">
+<span class="index item">{{ctrl.index}}</span>
+<img class="item" ng-src="{{ctrl.model.iconUrl}}" width="16" height="16" alt="{{ctrl.model.bookmark.title}}"/>
+<span class="item" ng-if="ctrl.model.bookmark.title">{{ctrl.model.bookmark.title}}</span>
+<context-menu ng-if="ctrl.model.bookmark.id">
     <context-menu-item handler="ctrl.model.edit()">
         Edit
     </context-menu-item>
